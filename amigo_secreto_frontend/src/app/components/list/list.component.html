@@ -1,0 +1,74 @@
+<div class="block-options">
+  <input
+    type="text"
+    pInputText
+    name="filter"
+    class="input-filter"
+    [(ngModel)]="filterPersons"
+    (ngModelChange)="changeFilter()"
+    placeholder="Filtre por um nome ou email"
+  />
+  <button
+  pButton
+  type="button"
+  severity="info"
+  label="Cadastrar Pessoas"
+  icon="pi pi-plus"
+  class="p-button-raised p-button-rounded p-button-text"
+  (click)="register()"
+></button>
+  <button
+    pButton
+    type="button"
+    severity="success"
+    label="Sortear"
+    icon="pi pi-plus"
+    class="p-button-raised p-button-rounded p-button-text"
+    (click)="drawSecretFriend()"
+  ></button>
+  <button
+  pButton
+  type="button"
+  severity="warning"
+  label="Limpar sorteio"
+  icon="pi pi-trash"
+  class="p-button-raised p-button-rounded p-button-text"
+  (click)="clear()"
+></button>
+</div>
+<p-table
+  [value]="filteredPersons"
+  styleClass="p-datatable-gridlines"
+  [tableStyle]="{ 'min-width': '50rem' }"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th>Nome</th>
+      <th>E-mail</th>
+      <th>Amigo secreto</th>
+      <th>Opções</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-personData>
+    <tr>
+      <td>{{ personData.person.name }}</td>
+      <td>{{ personData.person.email }}</td>
+      <td>{{ personData.chosen?.name || "Sorteio ainda não executado" }}</td>
+      <td class="options-buttons">
+        <p-button
+          icon="pi pi-pencil"
+          label="Editar"
+          severity="warning"
+          (onClick)="edit(personData)"
+        />
+
+        <p-button
+          icon="pi pi-trash"
+          label="Deletar"
+          severity="danger"
+          (onClick)="delete(personData)"
+        />
+      </td>
+    </tr>
+  </ng-template>
+</p-table>
