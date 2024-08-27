@@ -33,17 +33,22 @@ start_backend() {
 }
 
 start_frontend() {
+    # Verifica se a pasta do frontend existe
     if [ -d "amigo_secreto_frontend" ]; then
-        echo  "\nIniciando Frontend\n"
+        echo "\nIniciando Frontend\n"
         cd amigo_secreto_frontend || exit
-        echo  "\nInstalando dependências...\n"
-        npm install
+        
+        # Instala as dependências do projeto
+        echo "\nInstalando dependências...\n"
+            sudo npm install > /dev/null 2>&1
         sleep 4
-        echo  "\nIniciando servidor\n"
-        ng serve
-        echo  "\nFrontend iniciado\n"
+
+        # Inicia o servidor Angular
+        echo "\nIniciando servidor\n"
+        npm start
+        echo "\nFrontend iniciado\n"
     else
-        echo  "\nFrontend não encontrado, faça o download do repositório\n"
+        echo "\nFrontend não encontrado, faça o download do repositório\n"
     fi
 }
 

@@ -3,6 +3,9 @@
 ## dependencias
 
 - Projeto e scripts preparados para sistema operacional linux ou wsl no windows
+- Angular/cli 18.2.0 ou superior
+- Node 20 ou superior
+- npm 10.8.2
 
 ## Instalações
 
