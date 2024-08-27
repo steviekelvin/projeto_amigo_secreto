@@ -66,9 +66,10 @@
           icon="pi pi-trash"
           label="Deletar"
           severity="danger"
-          (onClick)="delete(personData)"
+          (onClick)="delete($event, personData)"
         />
       </td>
     </tr>
   </ng-template>
 </p-table>
+<p-confirmDialog />

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PersonsService } from '../../services/persons.service';
 import { Router } from '@angular/router';
 import { NotifyService } from '../../services/notify.service';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-list',
@@ -12,7 +13,8 @@ export class ListComponent implements OnInit {
   constructor(
     private personsService: PersonsService,
     private router: Router,
-    private notifyService: NotifyService
+    private notifyService: NotifyService,
+    private confirmationService: ConfirmationService
   ) {}
   public personsData: any[] = [];
   public filterPersons: string = '';
@@ -75,18 +77,39 @@ export class ListComponent implements OnInit {
     this.router.navigate(['/edit'], { state: { personData: personData } });
   };
 
-  delete = (personData: any) => {
+  deleteConfirmed = (personData: any) => {
     this.personsService.deletePerson(personData.person.id).subscribe(
       (response) => {
         this.personsService.clear();
         this.notifyService.showSuccess('Pessoa deletada com sucesso');
-        this.getPersons();
+        return this.getPersons();
       },
       (error) => {
-        console.log('error', error);
-        this.notifyService.showError('Erro ao deletar pessoa');
+        return this.notifyService.showError('Erro ao deletar pessoa');
       }
     );
+  };
+
+  delete = (event: Event, personData: any) => {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Deseja realmente excluir esta pessoa?',
+      header: 'Confirmação de exclusão',
+      icon: 'pi pi-info-circle',
+      acceptLabel: 'Sim',
+      rejectLabel: 'Não',
+      acceptButtonStyleClass: 'p-button-danger p-button-text',
+      rejectButtonStyleClass: 'p-button-text p-button-text',
+      acceptIcon: 'none',
+      rejectIcon: 'none',
+
+      accept: () => {
+        return this.deleteConfirmed(personData);
+      },
+      reject: () => {
+        return this.notifyService.showError('Operaçao cancelada com sucesso');
+      },
+    });
   };
 
   register = () => {
