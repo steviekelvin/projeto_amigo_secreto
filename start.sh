@@ -24,6 +24,7 @@ start_backend() {
         ./vendor/bin/sail artisan migrate
         echo  "\nBackend iniciado\n"
         ./vendor/bin/sail php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+        ./vendor/bin/sail php artisan key:generate
         ./vendor/bin/sail php artisan jwt:secret 
         cd .. || exit
     else
