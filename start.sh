@@ -2,39 +2,47 @@
 
    
     function start_backend {
-        echo "Starting backend"
+        echo -e "\nIniciando Backend\n"
         cd amigo_secreto_backend
-        echo verificando dependencias do projeto
+        echo -e "\nverificando dependencias do projeto\n"
         if [ -d "vendor" ]; then
-            echo "Dependencias já instaladas"
+            echo -e "\nDependencias já instaladas\n"
         else
-            echo "Instalando dependencias"
+            echo -e "\nInstalando dependencias\n"
             composer install
         fi
-        echo "Iniciando servidor"
+        echo -e "\nIniciando servidor\n"
+        cp .env.example .env
         ./vendor/bin/sail up -d
-        echo "Migrando banco de dados"
+        echo -e "\nAguarde até o sail levantar o container do banco...\n"
+        sleep 10
+        echo -e "\nMigrando banco de dados\n"
         ./vendor/bin/sail artisan migrate
-        echo "Backend iniciado"   
+        echo -e  "\nBackend iniciado\n"  
+        ./vendor/bin/sail php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
+        ./vendor/bin/sail php artisan jwt:secret 
         cd ..   
     } 
 
     function start_frontend {
-        echo "Starting frontend"
+        echo -e "\nIniciando Frontend\n"
         cd amigo_secreto_frontend
-        echo "Instalando dependencias"
+        echo -e "\nInstalando dependencias...\n"
         npm install
-        echo "Iniciando servidor"
+        sleep 4
+        echo -e "\nIniciando servidor\n"
         ng start
-        echo "Frontend iniciado"
+        echo -e "\nFrontend iniciado\n"
     }
     
-    
-    
-    # Start the server backend
+    # Iniciando o Backend e o Frontend
     if [ -f "amigo_secreto_backend"]; then
         start_backend
-        start_frontend
+        if [ -f "amigo_secreto_frontend"]; then
+            start_frontend
+        else
+            echo -e "\nFrontend não encontrado, faça o download do repositório\n"
+        fi
     else
-        echo "Backend não encontrado, faça o download do repositório"
+        echo -e "\nBackend não encontrado, faça o download do repositório\n"
     fi
