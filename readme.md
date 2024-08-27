@@ -7,3 +7,7 @@
 ## Instalações
 
 - Ao baixar o projeto rode o arquivo start.sh disponível na raiz do projeto para que ele faça as verificações e instalações
+
+```bash
+    sh start.sh
+```
