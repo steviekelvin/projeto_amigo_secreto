@@ -11,3 +11,9 @@
 ```bash
     sh start.sh
 ```
+
+- Para finalizar suas aplicações use o stop.sh
+
+```bash
+    sh stop.sh
+```

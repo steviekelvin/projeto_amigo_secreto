@@ -1,48 +1,51 @@
- #!/bin/bash 
+#!/bin/bash
 
-   
-    function start_backend {
-        echo -e "\nIniciando Backend\n"
-        cd amigo_secreto_backend
-        echo -e "\nverificando dependencias do projeto\n"
+# Garante que vai ter permissoes suficientes para executar o script
+chmod +x start.sh
+chmod 644 start.sh
+
+start_backend() {
+    if [ -d "amigo_secreto_backend" ]; then
+        echo  "\nIniciando Backend\n"
+        cd amigo_secreto_backend || exit
+        echo  "\nVerificando dependências do projeto\n"
         if [ -d "vendor" ]; then
-            echo -e "\nDependencias já instaladas\n"
+            echo  "\nDependências já instaladas\n"
         else
-            echo -e "\nInstalando dependencias\n"
+            echo  "\nInstalando dependências\n"
             composer install
         fi
-        echo -e "\nIniciando servidor\n"
+        echo  "\nIniciando servidor\n"
         cp .env.example .env
         ./vendor/bin/sail up -d
-        echo -e "\nAguarde até o sail levantar o container do banco...\n"
+        echo  "\nAguarde até o Sail levantar o container do banco...\n"
         sleep 10
-        echo -e "\nMigrando banco de dados\n"
+        echo  "\nMigrando banco de dados\n"
         ./vendor/bin/sail artisan migrate
-        echo -e  "\nBackend iniciado\n"  
+        echo  "\nBackend iniciado\n"
         ./vendor/bin/sail php artisan vendor:publish --provider="Tymon\JWTAuth\Providers\LaravelServiceProvider"
         ./vendor/bin/sail php artisan jwt:secret 
-        cd ..   
-    } 
+        cd .. || exit
+    else
+        echo  "\nBackend não encontrado, faça o download do repositório\n"
+    fi
+}
 
-    function start_frontend {
-        echo -e "\nIniciando Frontend\n"
-        cd amigo_secreto_frontend
-        echo -e "\nInstalando dependencias...\n"
+start_frontend() {
+    if [ -d "amigo_secreto_frontend" ]; then
+        echo  "\nIniciando Frontend\n"
+        cd amigo_secreto_frontend || exit
+        echo  "\nInstalando dependências...\n"
         npm install
         sleep 4
-        echo -e "\nIniciando servidor\n"
-        ng start
-        echo -e "\nFrontend iniciado\n"
-    }
-    
-    # Iniciando o Backend e o Frontend
-    if [ -f "amigo_secreto_backend"]; then
-        start_backend
-        if [ -f "amigo_secreto_frontend"]; then
-            start_frontend
-        else
-            echo -e "\nFrontend não encontrado, faça o download do repositório\n"
-        fi
+        echo  "\nIniciando servidor\n"
+        ng serve
+        echo  "\nFrontend iniciado\n"
     else
-        echo -e "\nBackend não encontrado, faça o download do repositório\n"
+        echo  "\nFrontend não encontrado, faça o download do repositório\n"
     fi
+}
+
+# Iniciando o Backend e o Frontend
+start_backend
+start_frontend
