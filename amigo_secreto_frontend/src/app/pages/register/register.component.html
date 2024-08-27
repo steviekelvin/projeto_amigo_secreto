@@ -29,9 +29,9 @@
     <label for="id">ID:</label>
     <input type="text" id="id" formControlName="id" readonly class="readonly" />
   </div>
-<div class="forms-options">
-  <button p-button type="button" (click)="goToHome()">Cancelar</button>
-  <button p-button type="submit">{{ person?.id ? "Editar" : "Cadastrar" }}</button>
+<div class="forms-options text-center">
+  <button pButton type="button" (click)="goToHome()" severity="danger">Cancelar</button>
+  <button pButton type="submit" severity="success">{{ person?.id ? "Editar" : "Cadastrar" }}</button>
 </div>
 </form>
 
