@@ -20,3 +20,5 @@
 ```bash
     sh stop.sh
 ```
+
+![image](https://github.com/user-attachments/assets/ba101cd7-2129-4b88-a2f8-09fe34a0e23f)
